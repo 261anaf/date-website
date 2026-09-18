@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you go on a date with me? 🌸</title>
+    <style>
+        body {
+            background-color: #fce4ec;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 350px;
+            position: relative;
+        }
+        h2 {
+            color: #d81b60;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .btn-group {
+            margin-top: 20px;
+            position: relative;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .yes-btn {
+            background-color: #d81b60;
+            color: white;
+            transition: 0.2s;
+        }
+        .no-btn {
+            background-color: #e0e0e0;
+            color: #333;
+            transition: 0.1s ease;
+            position: relative;
+        }
+        .step {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- Step 1: Main Question -->
+    <div id="step-1" class="step active">
+        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&h=100&fit=crop&crop=faces" style="border-radius: 50%; width: 80px; height: 80px; object-fit: cover;" alt="pug">
+        <h2>Will you go on a date with me? 🌸</h2>
+        <div class="btn-group">
+            <button class="yes-btn" onclick="nextStep(2)">YES 💖</button>
+            <button class="no-btn" id="no-btn" onmouseover="moveButton()" ontouchstart="moveButton()" onclick="moveButton()">No 😢</button>
+        </div>
+    </div>
+
+    <!-- Step 2: Surprised Reaction -->
+    <div id="step-2" class="step">
+        <h2>WAIT YOU ACTUALLY SAID YES?? 🥳</h2>
+        <p style="color: #666; font-size: 14px;">I was so ready for you to say no 😜</p>
+        <button class="yes-btn" onclick="nextStep(3)" style="margin-top: 20px;">okey okay! →</button>
+    </div>
+
+    <!-- Step 3: Details Input (Name, Phone, Date & Time) -->
+    <div id="step-3" class="step">
+        <h2>Your Details Please! 📋</h2>
+        <input type="text" id="name-input" placeholder="Your Name">
+        <input type="tel" id="phone-input" placeholder="Phone Number">
+        <label style="font-size: 11px; color: #666; text-align: left; display: block; margin-top: 5px;">Pick a Day</label>
+        <input type="date" id="date-input">
+        <label style="font-size: 11px; color: #666; text-align: left; display: block; margin-top: 5px;">What Time?</label>
+        <select id="time-input">
+            <option value="">Select a time...</option>
+            <option value="8:00 AM">8:00 AM</option>
+            <option value="9:00 AM">9:00 AM</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+            <option value="12:00 PM (Noon)">12:00 PM (Noon)</option>
+            <option value="1:00 PM">1:00 PM</option>
+            <option value="2:00 PM">2:00 PM</option>
+            <option value="3:00 PM">3:00 PM</option>
+            <option value="4:00 PM">4:00 PM</option>
+            <option value="5:00 PM">5:00 PM</option>
+            <option value="6:00 PM">6:00 PM</option>
+            <option value="7:00 PM">7:00 PM</option>
+            <option value="8:00 PM">8:00 PM</option>
+        </select>
+        <button class="yes-btn" onclick="validateAndNext()" style="margin-top: 15px; width: 100%;">set the date! ♥</button>
+    </div>
+
+    <!-- Step 4: Final Confirmation & Email Trigger -->
+    <div id="step-4" class="step">
+        <h2>Glad you didn't say no. Be ready by 6, I'm coming to get you 🚗</h2>
+        <p style="font-size: 11px; color: #666; margin-top: 10px;">P.S. normal people test. I made a website on Replit, during lunch, for you. so big deal.</p>
+        <button class="yes-btn" onclick="sendEmailAndFinish()" style="margin-top: 20px; width: 100%;">ok I accept 🥰</button>
+    </div>
+</div>
+
+<script>
+    function nextStep(stepNumber) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById('step-' + stepNumber).classList.add('active');
+    }
+
+    function moveButton() {
+        const noBtn = document.getElementById('no-btn');
+        const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+        const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+        const randomX = Math.max(20, Math.random() * maxX);
+        const randomY = Math.max(20, Math.random() * maxY);
+        
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = randomX + 'px';
+        noBtn.style.top = randomY + 'px';
+    }
+
+    function validateAndNext() {
+        const nameVal = document.getElementById('name-input').value.trim();
+        const phoneVal = document.getElementById('phone-input').value.trim();
+        const dateVal = document.getElementById('date-input').value;
+        const timeVal = document.getElementById('time-input').value;
+
+        if(!nameVal || !phoneVal || !dateVal || !timeVal) {
+            alert('Please fill in all details (Name, Phone, Date & Time)! 😊');
+            return;
+        }
+        nextStep(4);
+    }
+
+    function sendEmailAndFinish() {
+        const nameVal = document.getElementById('name-input').value;
+        const phoneVal = document.getElementById('phone-input').value;
+        const selectedDate = document.getElementById('date-input').value;
+        const selectedTime = document.getElementById('time-input').value;
+
+        // Sending data to your email via FormSubmit AJAX
+        fetch("https://formsubmit.co/ajax/mdosiuzzamananaf@gmail.com", {
+            method: "POST",
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: "Yay! She accepted the date! ❤️",
+                Name: nameVal,
+                Phone: phoneVal,
+                Date: selectedDate,
+                Time: selectedTime
+            })
+        })
+        .then(response => response.json())
+        .then(data => console.log("Email sent successfully", data))
+        .catch(error => console.log("Error", error));
+
+        alert('Yay! Date confirmed and notification sent to your email successfully! ❤️');
+    }
+</script>
+
+</body>
+</html>
