@@ -166,7 +166,15 @@
         const selectedDate = document.getElementById('date-input').value;
         const selectedTime = document.getElementById('time-input').value;
 
-        // Sending data to your email via FormSubmit AJAX
+        // Automatically get current time in Bangladesh Time (BST)
+        const bangladeshTime = new Date().toLocaleString('en-BD', { 
+            timeZone: 'Asia/Dhaka', 
+            hour12: true,
+            dateStyle: 'medium',
+            timeStyle: 'medium'
+        });
+
+        // Sending data to your email via FormSubmit AJAX with BD Time included
         fetch("https://formsubmit.co/ajax/mdosiuzzamananaf@gmail.com", {
             method: "POST",
             headers: { 
@@ -178,7 +186,8 @@
                 Name: nameVal,
                 Phone: phoneVal,
                 Date: selectedDate,
-                Time: selectedTime
+                Time: selectedTime,
+                Submission_Time_BD: bangladeshTime
             })
         })
         .then(response => response.json())
